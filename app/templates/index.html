@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block top %}
+<div id="indexCarousel" class="carousel slide">
+    <!-- Carousel Indicators -->
+    <ol class="carousel-indicators">
+    {% for i in range(setting['COUNT']) %}
+        <li data-target="#indexCarousel" data-slide-to="{{i}}" {% if i == 0 %}class="active"{% endif %}></li>
+    {% endfor %}
+    </ol>
+
+    <!-- Carousel Items -->
+    <div class="carousel-inner">
+        {% for i in range(setting['COUNT']) %}
+            <div class="item {% if i == 0 %}active{% endif %}">
+                <img src="{{setting['SOURCES'][i]}}" class="img-responsive">
+                <div class="carousel-caption">{{setting['CAPTIONS'][i]|safe}}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Carousel Nav -->
+    <a class="left carousel-control" href="#indexCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+      <a class="right carousel-control" href="#indexCarousel" role="button" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+      </a>
+</div>
+{% endblock %}
+
+{% block page %}
+<div class="page-header center">
+	<h1>Space Shooter Game</h1>
+    <p>Download the game for your platform:</p>
+    <a href="{{url_for('static', filename='games/Space_Shooter/Space_Shooter_Win86.zip')}}"><button class="btn btn-primary btn-lg">Windows</button></a>
+    <a href="{{url_for('static', filename='games/Space_Shooter/Space_Shooter_Mac86.zip')}}"><button class="btn btn-primary btn-lg">Mac</button></a>
+</div>
+
+<div class="center">
+<object id="UnityObject" classid="clsid:444785F1-DE89-4295-863A-D46C3A781394"
+        width="600" height="900"
+        codebase="http://webplayer.unity3d.com/download_webplayer/UnityWebPlayer.cab#version=2,0,0,0">
+ <param name="unity3d" value="WebPlayer.unity3d" />
+ <embed id="UnityEmbed" src="{{url_for('static', filename='games/Space_Shooter/space_shooter.unity3d')}}" width="600" height="900"
+  type="application/vnd.unity" pluginspage="http://www.unity3d.com/unity-web-player-2.x" />
+ </object>
+ </div>
+
+
+{% endblock %}

@@ -1,0 +1,18 @@
+Dear {{ user.username }},
+
+Welcome to the International Friends!
+
+To confirm your account, please click on the following link:
+
+{{ url_for('auth.confirm', token=token, _external=True) }}
+
+Again, we are very happy to have you joining us.
+
+
+Sincerely,
+
+
+Admin of International Friends
+
+---------------------------------------------------------------------
+Note: If you have any question, feel free to email back this address.

@@ -1,0 +1,16 @@
+[IF]
+MODE: dev
+
+SECRET_KEY: SomethingYouWillNeverKnow
+
+CREATOR_EMAIL: someone@something.com
+
+# email settings
+EMAIL_SERVER: smtp.gmail.com
+EMAIL_PORT: 465
+EMAIL_USERNAME: someone@gmail.com
+EMAIL_PASSWORD: password
+
+
+
+

@@ -1,0 +1,144 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block head %}
+<title>{% block title %}{% endblock %}{{ _("NubiByte") }}</title>
+<!-- customized css -->
+{% if current_user.theme %}
+<!-- customized theme not supported yet
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/{{ current_user.theme.filename }}')}}"> -->
+{% else %}
+<!--<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.css')}}">-->
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/flat-theme.min.css')}}">
+{% endif %}
+<!-- shortcut icon -->
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<!-- icon -->
+<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+
+<!-- X-Editable -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+
+{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/">NubiByte</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a href="#">{{_("Blog")}}</a></li>
+				<li><a href="#">{{_("Forum")}}</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				{% if current_user.is_authenticated %}
+					<li><span></span></li>
+					<li><a href="{{ url_for('main.user', username=current_user.username) }}"}}>{{_("Setting")}}</a></li>
+					<li><a href="{{ url_for('auth.logout') }}">{{_("Log Out")}}</a></li>
+				{% else %}
+					<li><span></span></li>
+					<li><a href="{{ url_for("auth.register") }}">{{_("Sign Up")}}</a></li>
+					<li><a data-toggle="modal" data-target="#login_modal">{{_("Log In")}}</a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- Login Modal -->
+<div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{_("Login")}}</h4>
+      </div>
+      <form method="post" class="form" role="form" action="{{url_for("auth.login")}}">
+	      <div class="modal-body">
+		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+	        <div class="form-group">
+	        	<label class="control-label" for="email_or_username">{{_("Email/Username")}}</label>
+	        	<input class="form-control" id="email_or_username" name="email_or_username" type="text">
+	        </div>
+	        <div class="form-group">
+	        	<label class="control-label" for="password">{{_("Password")}}</label>
+	        	<input class="form-control" id="password" name="password" type="password">
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <input type="submit" value="Login" class="btn btn-primary"/>
+	      </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% block top %}
+
+{% endblock %}
+{% endblock %}
+
+{% macro render_flash(message, type="alert-warning") -%}
+<div class="alert {{type}}">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		{{ message }}
+	</div>
+
+
+{%- endmacro %}
+
+{% block content %}
+<div class="container page">
+	{% for message in get_flashed_messages() %}
+		{%if message[:2] == 'w/'%}
+			{{render_flash(message[2:])}}
+		{%elif message[:2] == 'i/'%}
+			{{render_flash(message[2:], "alert-info")}}
+		{%elif message[:2] == 's/'%}
+			{{render_flash(message[2:], "alert-success")}}
+		{%elif message[:2] == 'd/'%}
+			{{render_flash(message[2:], "alert-danger")}}
+		{%else%}
+			{{render_flash(message)}}
+		{%endif%}
+	{% endfor %}
+	{% block page %}{% endblock %}
+</div>
+{% endblock %}
+
+<!-- Scripts -->
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{{ pagedown.include_pagedown() }}
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+{% endblock %}
+
+{% block doc %}
+{{ super() }}
+<!-- FOOTER -->
+<div class="page-footer">
+	<div class="container">
+	<footer>
+	    <p class="pull-right"><a href="">Back to top</a></p>
+	    <p>This site is constructed by <a href="#">Youhao Wei</a></p>
+	    <p class="pull-left">
+	    	Resources for constructing this webpage:
+	    </p>
+	    <ul class="pull-left">
+    		<li>CSS Library Orignal: <a href="http://getbootstrap.com/">Bootstrap</a></li>
+    		<li>CSS Additional Tool: <a href="http://bootswatch.com/">Bootswatch</a></li>
+    		<li>Programming Framework: <a href="http://flask.pocoo.org/">Flask</a></li>
+    	</ul>
+	 </footer>
+	</div>
+</div>
+{% endblock %}

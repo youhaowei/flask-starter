@@ -1,0 +1,17 @@
+Dear <strong>{{ user.username }}</strong>,
+
+<p>Thank you for joining International Friends!</p>
+
+<p>To confirm your account, please click on the following link:</p>
+
+
+<p><a href="{{ url_for('auth.confirm', token=token, _external=True) }}">{{ url_for('auth.confirm', token=token, _external=True) }}</a></p>
+
+<p>Again, we are very happy to have you with us.</p>
+<br/>
+<p>Sincerely,</p>
+<br/>
+
+<p>dmin of International Friends</p>
+
+<p><small>Note: If you have any question, feel free to email back this address.</small></p>

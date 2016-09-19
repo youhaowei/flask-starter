@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+User - Dream Moon Studio
+{% endblock %}
+
+{% block page %}
+<div class="page-header">
+	<h1>
+    {% if current_user == user %}
+    Hello,
+    {% endif %}
+    {{ user.get_name() }}
+    </h1>
+    {% if not user.confirmed %}
+    <p>
+        You have not confirmed your account yet, you can click <a href="{{url_for('auth.resend_confirmation')}}">here</a> to resend the confirmation email.
+    </p>
+    {% endif %}
+    {% if user.get_profile().location %}
+    <p>
+
+        From <a href="http://maps.google.com/?q={{ user.location }}"> {{ user.get_profile().location }} </a>
+
+    </p>
+    {% endif %}
+    {% if current_user.is_admin() %}
+    <p>
+        <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+    </p>
+    {% endif %}
+    {% if user.about_me %} <p>{{ user.get_profile().about_me }}</p> {% endif %}
+    <p>
+        Member since {{ moment(user.member_since).format('L') }}.
+        Last seen {{ moment(user.last_seen).fromNow() }}.
+    </p>
+</div>
+{% endblock %}
